@@ -4,8 +4,14 @@
 
 // 全局遊戲狀態
 const gameState = {
-    lifePoints: 1500,
-    economyPoints: 1500,
+    player: {
+        lifePoints: 1500,
+        economyPoints: 1500
+    },
+    opponent: {
+        lifePoints: 1500,
+        economyPoints: 1500
+    },
     currentRound: 1,
     eventHistory: [],
     activeEvent: null,
@@ -21,36 +27,20 @@ const gameState = {
 // DOM元素快取
 const DOM = {
     // 自身計分面板
-    playerLifePointsInput: document.getElementById('playerLifePoints'),
-    playerEconomyPointsInput: document.getElementById('playerEconomyPoints'),
-    increasePlayerLifeBtn: document.getElementById('increasePlayerLife'),
-    decreasePlayerLifeBtn: document.getElementById('decreasePlayerLife'),
-    increasePlayerEconomyBtn: document.getElementById('increasePlayerEconomy'),
-    decreasePlayerEconomyBtn: document.getElementById('decreasePlayerEconomy'),
+    playerLifePointsEl: document.getElementById('playerLifePoints'),
+    playerEconomyPointsEl: document.getElementById('playerEconomyPoints'),
 
     // 對方計分面板
-    opponentLifePointsInput: document.getElementById('opponentLifePoints'),
-    opponentEconomyPointsInput: document.getElementById('opponentEconomyPoints'),
-    increaseOpponentLifeBtn: document.getElementById('increaseOpponentLife'),
-    decreaseOpponentLifeBtn: document.getElementById('decreaseOpponentLife'),
-    increaseOpponentEconomyBtn: document.getElementById('increaseOpponentEconomy'),
-    decreaseOpponentEconomyBtn: document.getElementById('decreaseOpponentEconomy'),
+    opponentLifePointsEl: document.getElementById('opponentLifePoints'),
+    opponentEconomyPointsEl: document.getElementById('opponentEconomyPoints'),
 
     // 卡牌選擇
     playerCardSelector: document.getElementById('playerCardSelector'),
     opponentCardSelector: document.getElementById('opponentCardSelector'),
-    playerLifeAdjustmentInput: document.getElementById('playerLifeAdjustment'),
-    playerEconomyAdjustmentInput: document.getElementById('playerEconomyAdjustment'),
-    opponentLifeAdjustmentInput: document.getElementById('opponentLifeAdjustment'),
-    opponentEconomyAdjustmentInput: document.getElementById('opponentEconomyAdjustment'),
-    increasePlayerLifeAdjustBtn: document.getElementById('increasePlayerLifeAdjust'),
-    decreasePlayerLifeAdjustBtn: document.getElementById('decreasePlayerLifeAdjust'),
-    increasePlayerEconomyAdjustBtn: document.getElementById('increasePlayerEconomyAdjust'),
-    decreasePlayerEconomyAdjustBtn: document.getElementById('decreasePlayerEconomyAdjust'),
-    increaseOpponentLifeAdjustBtn: document.getElementById('increaseOpponentLifeAdjust'),
-    decreaseOpponentLifeAdjustBtn: document.getElementById('decreaseOpponentLifeAdjust'),
-    increaseOpponentEconomyAdjustBtn: document.getElementById('increaseOpponentEconomyAdjust'),
-    decreaseOpponentEconomyAdjustBtn: document.getElementById('decreaseOpponentEconomyAdjust'),
+    playerLifeAdjustmentEl: document.getElementById('playerLifeAdjustment'),
+    playerEconomyAdjustmentEl: document.getElementById('playerEconomyAdjustment'),
+    opponentLifeAdjustmentEl: document.getElementById('opponentLifeAdjustment'),
+    opponentEconomyAdjustmentEl: document.getElementById('opponentEconomyAdjustment'),
     applyCardEffectBtn: document.getElementById('applyCardEffect'),
 
     // 事件區域
@@ -230,131 +220,15 @@ function updateActiveEffectsDisplay() {
 
 // 註冊事件監聽器
 function registerEventListeners() {
-    // 自身計分面板按鈕
-    DOM.increasePlayerLifeBtn.addEventListener('click', () => {
-        updatePoints('player', 'life', 1);
-        checkRoundForEvent();
-    });
-
-    DOM.decreasePlayerLifeBtn.addEventListener('click', () => {
-        updatePoints('player', 'life', -1);
-        checkRoundForEvent();
-    });
-
-    DOM.increasePlayerEconomyBtn.addEventListener('click', () => {
-        updatePoints('player', 'economy', 1);
-        checkRoundForEvent();
-    });
-
-    DOM.decreasePlayerEconomyBtn.addEventListener('click', () => {
-        updatePoints('player', 'economy', -1);
-        checkRoundForEvent();
-    });
-
-    // 對方計分面板按鈕
-    DOM.increaseOpponentLifeBtn.addEventListener('click', () => {
-        updatePoints('opponent', 'life', 1);
-        checkRoundForEvent();
-    });
-
-    DOM.decreaseOpponentLifeBtn.addEventListener('click', () => {
-        updatePoints('opponent', 'life', -1);
-        checkRoundForEvent();
-    });
-
-    DOM.increaseOpponentEconomyBtn.addEventListener('click', () => {
-        updatePoints('opponent', 'economy', 1);
-        checkRoundForEvent();
-    });
-
-    DOM.decreaseOpponentEconomyBtn.addEventListener('click', () => {
-        updatePoints('opponent', 'economy', -1);
-        checkRoundForEvent();
-    });
-
-    // 手動輸入值變更
-    DOM.playerLifePointsInput.addEventListener('change', () => {
-        gameState.player.lifePoints = parseInt(DOM.playerLifePointsInput.value) || 0;
-        updatePointsDisplay();
-        checkGameEndCondition();
-    });
-
-    DOM.playerEconomyPointsInput.addEventListener('change', () => {
-        gameState.player.economyPoints = parseInt(DOM.playerEconomyPointsInput.value) || 0;
-        updatePointsDisplay();
-    });
-
-    DOM.opponentLifePointsInput.addEventListener('change', () => {
-        gameState.opponent.lifePoints = parseInt(DOM.opponentLifePointsInput.value) || 0;
-        updatePointsDisplay();
-        checkGameEndCondition();
-    });
-
-    DOM.opponentEconomyPointsInput.addEventListener('change', () => {
-        gameState.opponent.economyPoints = parseInt(DOM.opponentEconomyPointsInput.value) || 0;
-        updatePointsDisplay();
-    });
-
     // 卡牌選擇
     DOM.playerCardSelector.addEventListener('change', handleCardSelection);
     DOM.opponentCardSelector.addEventListener('change', handleCardSelection);
-
-    // 卡牌效果調整按鈕 - 自身
-    DOM.increasePlayerLifeAdjustBtn.addEventListener('click', () => {
-        updateAdjustment('playerLife', 10);
-    });
-
-    DOM.decreasePlayerLifeAdjustBtn.addEventListener('click', () => {
-        updateAdjustment('playerLife', -10);
-    });
-
-    DOM.increasePlayerEconomyAdjustBtn.addEventListener('click', () => {
-        updateAdjustment('playerEconomy', 10);
-    });
-
-    DOM.decreasePlayerEconomyAdjustBtn.addEventListener('click', () => {
-        updateAdjustment('playerEconomy', -10);
-    });
-
-    // 卡牌效果調整按鈕 - 對方
-    DOM.increaseOpponentLifeAdjustBtn.addEventListener('click', () => {
-        updateAdjustment('opponentLife', 10);
-    });
-
-    DOM.decreaseOpponentLifeAdjustBtn.addEventListener('click', () => {
-        updateAdjustment('opponentLife', -10);
-    });
-
-    DOM.increaseOpponentEconomyAdjustBtn.addEventListener('click', () => {
-        updateAdjustment('opponentEconomy', 10);
-    });
-
-    DOM.decreaseOpponentEconomyAdjustBtn.addEventListener('click', () => {
-        updateAdjustment('opponentEconomy', -10);
-    });
 
     // 應用卡牌效果按鈕
     DOM.applyCardEffectBtn.addEventListener('click', applyCardEffect);
 
     // 生成事件按鈕
     DOM.generateEventBtn.addEventListener('click', generateRandomEvent);
-
-    // 調整值輸入框變更
-    DOM.playerLifeAdjustmentInput.addEventListener('change', () => {
-        validateAdjustmentInput(DOM.playerLifeAdjustmentInput);
-    });
-
-    DOM.playerEconomyAdjustmentInput.addEventListener('change', () => {
-        validateAdjustmentInput(DOM.playerEconomyAdjustmentInput);
-    });
-
-    DOM.opponentLifeAdjustmentInput.addEventListener('change', () => {
-        validateAdjustmentInput(DOM.opponentLifeAdjustmentInput);
-    });
-
-    DOM.opponentEconomyAdjustmentInput.addEventListener('change', () => {
-        validateAdjustmentInput(DOM.opponentEconomyAdjustmentInput);
-    });
 }
 
 // 處理卡牌選擇
@@ -387,45 +261,48 @@ function handleCardSelection(event) {
             // 自身出牌時的效果設定（自身通常消耗經濟值，對對方造成傷害）
             if (card.category === '攻擊') {
                 // 攻擊卡：消耗自身經濟值，對對方造成生命值傷害
-                DOM.playerLifeAdjustmentInput.value = 0;
-                DOM.playerEconomyAdjustmentInput.value = effects.economy || 0;
-                DOM.opponentLifeAdjustmentInput.value = effects.life || 0;
-                DOM.opponentEconomyAdjustmentInput.value = 0;
+                DOM.playerLifeAdjustmentEl.textContent = 0;
+                DOM.playerEconomyAdjustmentEl.textContent = effects.economy || 0;
+                DOM.opponentLifeAdjustmentEl.textContent = effects.life || 0;
+                DOM.opponentEconomyAdjustmentEl.textContent = 0;
             } else if (card.category === '防禦') {
                 // 防禦卡：消耗自身經濟值，提升自身生命值
-                DOM.playerLifeAdjustmentInput.value = effects.life || 0;
-                DOM.playerEconomyAdjustmentInput.value = effects.economy || 0;
-                DOM.opponentLifeAdjustmentInput.value = 0;
-                DOM.opponentEconomyAdjustmentInput.value = 0;
+                DOM.playerLifeAdjustmentEl.textContent = effects.life || 0;
+                DOM.playerEconomyAdjustmentEl.textContent = effects.economy || 0;
+                DOM.opponentLifeAdjustmentEl.textContent = 0;
+                DOM.opponentEconomyAdjustmentEl.textContent = 0;
             } else {
                 // 道具卡：通常影響自身
-                DOM.playerLifeAdjustmentInput.value = effects.life || 0;
-                DOM.playerEconomyAdjustmentInput.value = effects.economy || 0;
-                DOM.opponentLifeAdjustmentInput.value = 0;
-                DOM.opponentEconomyAdjustmentInput.value = 0;
+                DOM.playerLifeAdjustmentEl.textContent = effects.life || 0;
+                DOM.playerEconomyAdjustmentEl.textContent = effects.economy || 0;
+                DOM.opponentLifeAdjustmentEl.textContent = 0;
+                DOM.opponentEconomyAdjustmentEl.textContent = 0;
             }
         } else if (isOpponentCard) {
             // 對方出牌時的效果設定（反向處理）
             if (card.category === '攻擊') {
                 // 如果對方使用攻擊卡，對方消耗經濟值，自身受到生命值傷害
-                DOM.playerLifeAdjustmentInput.value = effects.life || 0;
-                DOM.playerEconomyAdjustmentInput.value = 0;
-                DOM.opponentLifeAdjustmentInput.value = 0;
-                DOM.opponentEconomyAdjustmentInput.value = effects.economy || 0;
+                DOM.playerLifeAdjustmentEl.textContent = effects.life || 0;
+                DOM.playerEconomyAdjustmentEl.textContent = 0;
+                DOM.opponentLifeAdjustmentEl.textContent = 0;
+                DOM.opponentEconomyAdjustmentEl.textContent = effects.economy || 0;
             } else if (card.category === '防禦') {
                 // 如果對方使用防禦卡，對方消耗經濟值，提升對方生命值
-                DOM.playerLifeAdjustmentInput.value = 0;
-                DOM.playerEconomyAdjustmentInput.value = 0;
-                DOM.opponentLifeAdjustmentInput.value = effects.life || 0;
-                DOM.opponentEconomyAdjustmentInput.value = effects.economy || 0;
+                DOM.playerLifeAdjustmentEl.textContent = 0;
+                DOM.playerEconomyAdjustmentEl.textContent = 0;
+                DOM.opponentLifeAdjustmentEl.textContent = effects.life || 0;
+                DOM.opponentEconomyAdjustmentEl.textContent = effects.economy || 0;
             } else {
                 // 道具卡：對方使用道具卡，影響對方
-                DOM.playerLifeAdjustmentInput.value = 0;
-                DOM.playerEconomyAdjustmentInput.value = 0;
-                DOM.opponentLifeAdjustmentInput.value = effects.life || 0;
-                DOM.opponentEconomyAdjustmentInput.value = effects.economy || 0;
+                DOM.playerLifeAdjustmentEl.textContent = 0;
+                DOM.playerEconomyAdjustmentEl.textContent = 0;
+                DOM.opponentLifeAdjustmentEl.textContent = effects.life || 0;
+                DOM.opponentEconomyAdjustmentEl.textContent = effects.economy || 0;
             }
         }
+
+        // 高亮顯示卡牌效果數值
+        highlightAdjustmentValues();
 
         // 顯示卡牌詳情
         showCardDetails(card);
@@ -433,11 +310,70 @@ function handleCardSelection(event) {
         // 未選中卡牌，重置數值
         gameState.selectedCard = null;
         activeCardSource = null;
-        DOM.playerLifeAdjustmentInput.value = 0;
-        DOM.playerEconomyAdjustmentInput.value = 0;
-        DOM.opponentLifeAdjustmentInput.value = 0;
-        DOM.opponentEconomyAdjustmentInput.value = 0;
+        DOM.playerLifeAdjustmentEl.textContent = 0;
+        DOM.playerEconomyAdjustmentEl.textContent = 0;
+        DOM.opponentLifeAdjustmentEl.textContent = 0;
+        DOM.opponentEconomyAdjustmentEl.textContent = 0;
+        DOM.playerLifeAdjustmentEl.className = 'bg-secondary rounded p-2 text-center text-white';
+        DOM.playerEconomyAdjustmentEl.className = 'bg-secondary rounded p-2 text-center text-white';
+        DOM.opponentLifeAdjustmentEl.className = 'bg-secondary rounded p-2 text-center text-white';
+        DOM.opponentEconomyAdjustmentEl.className = 'bg-secondary rounded p-2 text-center text-white';
         hideCardDetails();
+    }
+}
+
+// 高亮顯示卡牌效果數值
+function highlightAdjustmentValues() {
+    // 玩家生命值調整
+    const playerLifeValue = parseInt(DOM.playerLifeAdjustmentEl.textContent) || 0;
+    if (playerLifeValue > 0) {
+        DOM.playerLifeAdjustmentEl.classList.add('text-success');
+        DOM.playerLifeAdjustmentEl.classList.remove('text-danger', 'text-white');
+    } else if (playerLifeValue < 0) {
+        DOM.playerLifeAdjustmentEl.classList.add('text-danger');
+        DOM.playerLifeAdjustmentEl.classList.remove('text-success', 'text-white');
+    } else {
+        DOM.playerLifeAdjustmentEl.classList.add('text-white');
+        DOM.playerLifeAdjustmentEl.classList.remove('text-success', 'text-danger');
+    }
+
+    // 玩家經濟值調整
+    const playerEconomyValue = parseInt(DOM.playerEconomyAdjustmentEl.textContent) || 0;
+    if (playerEconomyValue > 0) {
+        DOM.playerEconomyAdjustmentEl.classList.add('text-success');
+        DOM.playerEconomyAdjustmentEl.classList.remove('text-danger', 'text-white');
+    } else if (playerEconomyValue < 0) {
+        DOM.playerEconomyAdjustmentEl.classList.add('text-danger');
+        DOM.playerEconomyAdjustmentEl.classList.remove('text-success', 'text-white');
+    } else {
+        DOM.playerEconomyAdjustmentEl.classList.add('text-white');
+        DOM.playerEconomyAdjustmentEl.classList.remove('text-success', 'text-danger');
+    }
+
+    // 對手生命值調整
+    const opponentLifeValue = parseInt(DOM.opponentLifeAdjustmentEl.textContent) || 0;
+    if (opponentLifeValue > 0) {
+        DOM.opponentLifeAdjustmentEl.classList.add('text-success');
+        DOM.opponentLifeAdjustmentEl.classList.remove('text-danger', 'text-white');
+    } else if (opponentLifeValue < 0) {
+        DOM.opponentLifeAdjustmentEl.classList.add('text-danger');
+        DOM.opponentLifeAdjustmentEl.classList.remove('text-success', 'text-white');
+    } else {
+        DOM.opponentLifeAdjustmentEl.classList.add('text-white');
+        DOM.opponentLifeAdjustmentEl.classList.remove('text-success', 'text-danger');
+    }
+
+    // 對手經濟值調整
+    const opponentEconomyValue = parseInt(DOM.opponentEconomyAdjustmentEl.textContent) || 0;
+    if (opponentEconomyValue > 0) {
+        DOM.opponentEconomyAdjustmentEl.classList.add('text-success');
+        DOM.opponentEconomyAdjustmentEl.classList.remove('text-danger', 'text-white');
+    } else if (opponentEconomyValue < 0) {
+        DOM.opponentEconomyAdjustmentEl.classList.add('text-danger');
+        DOM.opponentEconomyAdjustmentEl.classList.remove('text-success', 'text-white');
+    } else {
+        DOM.opponentEconomyAdjustmentEl.classList.add('text-white');
+        DOM.opponentEconomyAdjustmentEl.classList.remove('text-success', 'text-danger');
     }
 }
 
@@ -485,23 +421,6 @@ function hideCardDetails() {
     }
 }
 
-// 更新調整值
-function updateAdjustment(type, amount) {
-    if (type === 'life') {
-        const currentValue = parseInt(DOM.playerLifeAdjustmentInput.value) || 0;
-        DOM.playerLifeAdjustmentInput.value = currentValue + amount;
-    } else if (type === 'economy') {
-        const currentValue = parseInt(DOM.playerEconomyAdjustmentInput.value) || 0;
-        DOM.playerEconomyAdjustmentInput.value = currentValue + amount;
-    }
-}
-
-// 驗證調整值輸入
-function validateAdjustmentInput(inputElement) {
-    let value = parseInt(inputElement.value) || 0;
-    inputElement.value = value;
-}
-
 // 應用卡牌效果
 function applyCardEffect() {
     if (!gameState.selectedCard) {
@@ -510,10 +429,10 @@ function applyCardEffect() {
     }
 
     const card = gameState.selectedCard;
-    let playerLifeEffect = parseInt(DOM.playerLifeAdjustmentInput.value) || 0;
-    let playerEconomyEffect = parseInt(DOM.playerEconomyAdjustmentInput.value) || 0;
-    let opponentLifeEffect = parseInt(DOM.opponentLifeAdjustmentInput.value) || 0;
-    let opponentEconomyEffect = parseInt(DOM.opponentEconomyAdjustmentInput.value) || 0;
+    let playerLifeEffect = parseInt(DOM.playerLifeAdjustmentEl.textContent) || 0;
+    let playerEconomyEffect = parseInt(DOM.playerEconomyAdjustmentEl.textContent) || 0;
+    let opponentLifeEffect = parseInt(DOM.opponentLifeAdjustmentEl.textContent) || 0;
+    let opponentEconomyEffect = parseInt(DOM.opponentEconomyAdjustmentEl.textContent) || 0;
 
     // 檢查經濟值是否足夠支付卡牌成本
     if (activeCardSource === 'player' && (card.category === '攻擊' || card.category === '防禦')) {
@@ -581,10 +500,14 @@ function applyCardEffect() {
     DOM.opponentCardSelector.value = '';
     gameState.selectedCard = null;
     activeCardSource = null;
-    DOM.playerLifeAdjustmentInput.value = 0;
-    DOM.playerEconomyAdjustmentInput.value = 0;
-    DOM.opponentLifeAdjustmentInput.value = 0;
-    DOM.opponentEconomyAdjustmentInput.value = 0;
+    DOM.playerLifeAdjustmentEl.textContent = 0;
+    DOM.playerEconomyAdjustmentEl.textContent = 0;
+    DOM.opponentLifeAdjustmentEl.textContent = 0;
+    DOM.opponentEconomyAdjustmentEl.textContent = 0;
+    DOM.playerLifeAdjustmentEl.className = 'bg-secondary rounded p-2 text-center text-white';
+    DOM.playerEconomyAdjustmentEl.className = 'bg-secondary rounded p-2 text-center text-white';
+    DOM.opponentLifeAdjustmentEl.className = 'bg-secondary rounded p-2 text-center text-white';
+    DOM.opponentEconomyAdjustmentEl.className = 'bg-secondary rounded p-2 text-center text-white';
     hideCardDetails();
 
     // 增加回合數
@@ -716,39 +639,21 @@ function updateActiveEffects() {
 
 // 檢查遊戲結束條件
 function checkGameEndCondition() {
-    if (gameState.gameEndCondition.enabled && gameState.lifePoints < gameState.gameEndCondition.threshold) {
+    if (gameState.gameEndCondition.enabled && gameState.player.lifePoints < gameState.gameEndCondition.threshold) {
         // 顯示遊戲結束提示
         alert(`遊戲結束！生命值已低於${gameState.gameEndCondition.threshold}點。`);
     }
 }
 
-// 更新計分
-function updatePoints(type, amount) {
-    if (type === 'life') {
-        gameState.lifePoints += amount;
-        if (gameState.lifePoints < 0) gameState.lifePoints = 0;
-    } else if (type === 'economy') {
-        gameState.economyPoints += amount;
-        if (gameState.economyPoints < 0) gameState.economyPoints = 0;
-    }
-
-    updatePointsDisplay();
-    checkGameEndCondition();
-
-    // 增加回合數
-    gameState.currentRound++;
-    updateRoundDisplay();
-}
-
 // 更新顯示
 function updatePointsDisplay() {
     // 顯示自身狀態
-    DOM.playerLifePointsInput.value = gameState.player.lifePoints;
-    DOM.playerEconomyPointsInput.value = gameState.player.economyPoints;
+    DOM.playerLifePointsEl.textContent = gameState.player.lifePoints;
+    DOM.playerEconomyPointsEl.textContent = gameState.player.economyPoints;
 
     // 顯示對方狀態
-    DOM.opponentLifePointsInput.value = gameState.opponent.lifePoints;
-    DOM.opponentEconomyPointsInput.value = gameState.opponent.economyPoints;
+    DOM.opponentLifePointsEl.textContent = gameState.opponent.lifePoints;
+    DOM.opponentEconomyPointsEl.textContent = gameState.opponent.economyPoints;
 }
 
 // 創建回合計數器
@@ -997,11 +902,11 @@ function showEventResult(resultText, lifeEffect, economyEffect) {
     DOM.resultContainer.classList.remove('d-none');
 
     // 應用效果
-    gameState.lifePoints += lifeEffect;
-    if (gameState.lifePoints < 0) gameState.lifePoints = 0;
+    gameState.player.lifePoints += lifeEffect;
+    if (gameState.player.lifePoints < 0) gameState.player.lifePoints = 0;
 
-    gameState.economyPoints += economyEffect;
-    if (gameState.economyPoints < 0) gameState.economyPoints = 0;
+    gameState.player.economyPoints += economyEffect;
+    if (gameState.player.economyPoints < 0) gameState.player.economyPoints = 0;
 
     updatePointsDisplay();
 }

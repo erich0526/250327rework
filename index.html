@@ -72,26 +72,14 @@
                             </div>
                             <div class="card-body">
                                 <div class="mb-3">
-                                    <label for="playerLifePoints" class="form-label">生命值</label>
-                                    <div class="input-group">
-                                        <button class="btn btn-danger" id="decreasePlayerLife"><i
-                                                class="fas fa-minus"></i></button>
-                                        <input type="number" class="form-control text-center" id="playerLifePoints"
-                                            value="1500" min="0">
-                                        <button class="btn btn-success" id="increasePlayerLife"><i
-                                                class="fas fa-plus"></i></button>
-                                    </div>
+                                    <label class="form-label">生命值</label>
+                                    <div class="bg-secondary rounded p-2 text-center text-white" id="playerLifePoints">
+                                        1500</div>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="playerEconomyPoints" class="form-label">經濟值</label>
-                                    <div class="input-group">
-                                        <button class="btn btn-danger" id="decreasePlayerEconomy"><i
-                                                class="fas fa-minus"></i></button>
-                                        <input type="number" class="form-control text-center" id="playerEconomyPoints"
-                                            value="1500" min="0">
-                                        <button class="btn btn-success" id="increasePlayerEconomy"><i
-                                                class="fas fa-plus"></i></button>
-                                    </div>
+                                    <label class="form-label">經濟值</label>
+                                    <div class="bg-secondary rounded p-2 text-center text-white"
+                                        id="playerEconomyPoints">1500</div>
                                 </div>
                             </div>
                         </div>
@@ -105,26 +93,14 @@
                             </div>
                             <div class="card-body">
                                 <div class="mb-3">
-                                    <label for="opponentLifePoints" class="form-label">生命值</label>
-                                    <div class="input-group">
-                                        <button class="btn btn-danger" id="decreaseOpponentLife"><i
-                                                class="fas fa-minus"></i></button>
-                                        <input type="number" class="form-control text-center" id="opponentLifePoints"
-                                            value="1500" min="0">
-                                        <button class="btn btn-success" id="increaseOpponentLife"><i
-                                                class="fas fa-plus"></i></button>
-                                    </div>
+                                    <label class="form-label">生命值</label>
+                                    <div class="bg-secondary rounded p-2 text-center text-white"
+                                        id="opponentLifePoints">1500</div>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="opponentEconomyPoints" class="form-label">經濟值</label>
-                                    <div class="input-group">
-                                        <button class="btn btn-danger" id="decreaseOpponentEconomy"><i
-                                                class="fas fa-minus"></i></button>
-                                        <input type="number" class="form-control text-center" id="opponentEconomyPoints"
-                                            value="1500" min="0">
-                                        <button class="btn btn-success" id="increaseOpponentEconomy"><i
-                                                class="fas fa-plus"></i></button>
-                                    </div>
+                                    <label class="form-label">經濟值</label>
+                                    <div class="bg-secondary rounded p-2 text-center text-white"
+                                        id="opponentEconomyPoints">1500</div>
                                 </div>
                             </div>
                         </div>
@@ -135,9 +111,9 @@
                     <div class="col-12">
                         <div class="card bg-dark">
                             <div class="card-body">
-                                <h5 class="card-title">卡牌效果調整</h5>
+                                <h5 class="card-title">卡牌效果</h5>
                                 <div class="row g-3">
-                                    <!-- 自身效果調整 -->
+                                    <!-- 自身效果顯示 -->
                                     <div class="col-md-6">
                                         <div class="card bg-info bg-opacity-25 mb-3">
                                             <div class="card-header bg-info bg-opacity-50 text-white">
@@ -145,37 +121,20 @@
                                             </div>
                                             <div class="card-body">
                                                 <div class="mb-2">
-                                                    <label for="playerLifeAdjustment" class="form-label">生命值調整</label>
-                                                    <div class="input-group">
-                                                        <button class="btn btn-outline-danger"
-                                                            id="decreasePlayerLifeAdjust"><i
-                                                                class="fas fa-minus"></i></button>
-                                                        <input type="number" class="form-control text-center"
-                                                            id="playerLifeAdjustment" value="0">
-                                                        <button class="btn btn-outline-success"
-                                                            id="increasePlayerLifeAdjust"><i
-                                                                class="fas fa-plus"></i></button>
-                                                    </div>
+                                                    <label class="form-label">生命值影響</label>
+                                                    <div class="bg-secondary rounded p-2 text-center text-white"
+                                                        id="playerLifeAdjustment">0</div>
                                                 </div>
                                                 <div class="mb-2">
-                                                    <label for="playerEconomyAdjustment"
-                                                        class="form-label">經濟值調整</label>
-                                                    <div class="input-group">
-                                                        <button class="btn btn-outline-danger"
-                                                            id="decreasePlayerEconomyAdjust"><i
-                                                                class="fas fa-minus"></i></button>
-                                                        <input type="number" class="form-control text-center"
-                                                            id="playerEconomyAdjustment" value="0">
-                                                        <button class="btn btn-outline-success"
-                                                            id="increasePlayerEconomyAdjust"><i
-                                                                class="fas fa-plus"></i></button>
-                                                    </div>
+                                                    <label class="form-label">經濟值影響</label>
+                                                    <div class="bg-secondary rounded p-2 text-center text-white"
+                                                        id="playerEconomyAdjustment">0</div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <!-- 對方效果調整 -->
+                                    <!-- 對方效果顯示 -->
                                     <div class="col-md-6">
                                         <div class="card bg-danger bg-opacity-25 mb-3">
                                             <div class="card-header bg-danger bg-opacity-50 text-white">
@@ -183,31 +142,14 @@
                                             </div>
                                             <div class="card-body">
                                                 <div class="mb-2">
-                                                    <label for="opponentLifeAdjustment" class="form-label">生命值調整</label>
-                                                    <div class="input-group">
-                                                        <button class="btn btn-outline-danger"
-                                                            id="decreaseOpponentLifeAdjust"><i
-                                                                class="fas fa-minus"></i></button>
-                                                        <input type="number" class="form-control text-center"
-                                                            id="opponentLifeAdjustment" value="0">
-                                                        <button class="btn btn-outline-success"
-                                                            id="increaseOpponentLifeAdjust"><i
-                                                                class="fas fa-plus"></i></button>
-                                                    </div>
+                                                    <label class="form-label">生命值影響</label>
+                                                    <div class="bg-secondary rounded p-2 text-center text-white"
+                                                        id="opponentLifeAdjustment">0</div>
                                                 </div>
                                                 <div class="mb-2">
-                                                    <label for="opponentEconomyAdjustment"
-                                                        class="form-label">經濟值調整</label>
-                                                    <div class="input-group">
-                                                        <button class="btn btn-outline-danger"
-                                                            id="decreaseOpponentEconomyAdjust"><i
-                                                                class="fas fa-minus"></i></button>
-                                                        <input type="number" class="form-control text-center"
-                                                            id="opponentEconomyAdjustment" value="0">
-                                                        <button class="btn btn-outline-success"
-                                                            id="increaseOpponentEconomyAdjust"><i
-                                                                class="fas fa-plus"></i></button>
-                                                    </div>
+                                                    <label class="form-label">經濟值影響</label>
+                                                    <div class="bg-secondary rounded p-2 text-center text-white"
+                                                        id="opponentEconomyAdjustment">0</div>
                                                 </div>
                                             </div>
                                         </div>
