@@ -68,8 +68,14 @@ let activeCardSource = null; // 'player' 或 'opponent'
 
 // 初始化應用
 function initApp() {
-    // 初始化卡牌選擇器
-    initCardSelector();
+    // 監聽卡牌數據加載完成事件
+    document.addEventListener('cardsLoaded', function () {
+        // 初始化卡牌選擇器
+        initCardSelector();
+
+        // 初始化卡牌提示工具
+        initCardTooltips();
+    });
 
     // 註冊事件監聽器
     registerEventListeners();
@@ -101,9 +107,6 @@ function initCardSelector() {
     // 初始化兩個選擇器
     initSingleCardSelector(DOM.playerCardSelector, categories);
     initSingleCardSelector(DOM.opponentCardSelector, categories);
-
-    // 初始化卡牌提示工具
-    initCardTooltips();
 }
 
 // 初始化單個卡牌選擇器
@@ -615,6 +618,23 @@ function handleSpecialEffect(card) {
             }
 
             addToHistory(defenseTitle, `被攻擊效果-30%（持續${card.effects.duration}回合）`, 0, 0, 0, 0);
+            break;
+
+        case 'random_event':
+            // 觸發隨機事件
+            let randomEventTitle = '';
+            if (activeCardSource === 'player') {
+                randomEventTitle = `自身使用卡牌：${card.name}`;
+            } else if (activeCardSource === 'opponent') {
+                randomEventTitle = `對方使用卡牌：${card.name}`;
+            } else {
+                randomEventTitle = `使用卡牌：${card.name}`;
+            }
+
+            addToHistory(randomEventTitle, `觸發了一個隨機事件`, 0, 0, 0, 0);
+
+            // 調用隨機事件生成函數
+            generateRandomEvent();
             break;
     }
 

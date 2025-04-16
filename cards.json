@@ -117,6 +117,13 @@
     ],
     "ItemCards": [
         {
+            "name": "＊隨機事件＊",
+            "level": "",
+            "condition": "",
+            "description": "觸發一個隨機事件。這張卡牌將導致一個不可預測的事件發生。",
+            "effect": "隨機事件"
+        },
+        {
             "name": "睡滿八小時",
             "level": "",
             "condition": "",
