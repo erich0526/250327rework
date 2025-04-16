@@ -11,154 +11,183 @@
     <link rel="stylesheet" href="css/style.css">
     <!-- Font Awesome 圖標 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        body {
+            height: 100vh;
+            overflow: hidden;
+        }
+        .main-container {
+            height: calc(100vh - 2rem);
+            padding: 1rem;
+        }
+        .card {
+            height: 100%;
+            overflow-y: auto;
+        }
+        .status-section {
+            height: 30%;
+        }
+        .card-section {
+            height: 40%;
+        }
+        .event-section {
+            height: 30%;
+        }
+        .card-body {
+            padding: 0.5rem;
+        }
+        .row {
+            margin: 0;
+        }
+        .col-md-6 {
+            padding: 0.5rem;
+        }
+    </style>
 </head>
 
 <body class="bg-dark text-light">
-    <div class="container py-4">
-        <!-- 頁面標題 -->
-        <header class="text-center mb-4">
-            <h1 class="display-4 fw-bold">RPG桌遊助手</h1>
-            <p class="lead">隨機事件生成器與計分系統</p>
-        </header>
-
-        <!-- 角色狀態面板 -->
-        <div class="card bg-secondary text-light mb-4 shadow">
-            <div class="card-header bg-primary">
-                <h2 class="h4 mb-0">角色狀態</h2>
-            </div>
-            <div class="card-body">
-                <!-- 卡牌選擇 - 分為自身出牌和對方出牌 -->
-                <div class="row mb-3">
-                    <!-- 自身出牌 -->
-                    <div class="col-md-6 mb-3">
-                        <div class="card bg-info bg-opacity-25 h-100">
-                            <div class="card-header bg-info bg-opacity-50 text-white">
-                                <h5 class="m-0">自身出牌</h5>
-                            </div>
-                            <div class="card-body">
-                                <label for="playerCardSelector" class="form-label">選擇自身卡牌</label>
-                                <select id="playerCardSelector" class="form-select bg-dark text-light">
-                                    <option value="">-- 選擇卡牌 --</option>
-                                    <!-- 卡牌選項將由JavaScript動態生成 -->
-                                </select>
-                            </div>
-                        </div>
+    <div class="container-fluid main-container">
+        <div class="row h-100 g-2">
+            <!-- 左側面板 -->
+            <div class="col-md-8 h-100">
+                <div class="card bg-secondary text-light h-100">
+                    <div class="card-header bg-primary">
+                        <h2 class="h4 mb-0">遊戲主面板</h2>
                     </div>
-
-                    <!-- 對方出牌 -->
-                    <div class="col-md-6 mb-3">
-                        <div class="card bg-danger bg-opacity-25 h-100">
-                            <div class="card-header bg-danger bg-opacity-50 text-white">
-                                <h5 class="m-0">對方出牌</h5>
-                            </div>
-                            <div class="card-body">
-                                <label for="opponentCardSelector" class="form-label">選擇對方卡牌</label>
-                                <select id="opponentCardSelector" class="form-select bg-dark text-light">
-                                    <option value="">-- 選擇卡牌 --</option>
-                                    <!-- 卡牌選項將由JavaScript動態生成 -->
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 狀態面板 - 分為自身和對方 -->
-                <div class="row mb-4">
-                    <!-- 自身狀態 -->
-                    <div class="col-md-6 mb-3">
-                        <div class="card bg-dark text-light h-100">
-                            <div class="card-header bg-info text-dark">
-                                <h5 class="m-0">自身狀態</h5>
-                            </div>
-                            <div class="card-body">
-                                <div class="mb-3">
-                                    <label class="form-label">生命值</label>
-                                    <div class="bg-secondary rounded p-2 text-center text-white" id="playerLifePoints">
-                                        1500</div>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">經濟值</label>
-                                    <div class="bg-secondary rounded p-2 text-center text-white"
-                                        id="playerEconomyPoints">1500</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 對方狀態 -->
-                    <div class="col-md-6 mb-3">
-                        <div class="card bg-dark text-light h-100">
-                            <div class="card-header bg-danger text-white">
-                                <h5 class="m-0">對方狀態</h5>
-                            </div>
-                            <div class="card-body">
-                                <div class="mb-3">
-                                    <label class="form-label">生命值</label>
-                                    <div class="bg-secondary rounded p-2 text-center text-white"
-                                        id="opponentLifePoints">1500</div>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">經濟值</label>
-                                    <div class="bg-secondary rounded p-2 text-center text-white"
-                                        id="opponentEconomyPoints">1500</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row mt-3" id="adjustmentPanel">
-                    <div class="col-12">
-                        <div class="card bg-dark">
-                            <div class="card-body">
-                                <h5 class="card-title">卡牌效果</h5>
-                                <div class="row g-3">
-                                    <!-- 自身效果顯示 -->
-                                    <div class="col-md-6">
-                                        <div class="card bg-info bg-opacity-25 mb-3">
-                                            <div class="card-header bg-info bg-opacity-50 text-white">
-                                                <h6 class="m-0">對自身效果</h6>
+                    <div class="card-body">
+                        <!-- 狀態面板 -->
+                        <div class="row status-section g-2">
+                            <!-- 自身狀態 -->
+                            <div class="col-md-6 h-100">
+                                <div class="card bg-dark text-light h-100">
+                                    <div class="card-header bg-info text-dark">
+                                        <h5 class="m-0">自身狀態</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row h-100 align-items-center">
+                                            <div class="col-6">
+                                                <label class="form-label">生命值</label>
+                                                <div class="bg-secondary rounded p-2 text-center text-white" id="playerLifePoints">1500</div>
                                             </div>
-                                            <div class="card-body">
-                                                <div class="mb-2">
-                                                    <label class="form-label">生命值影響</label>
-                                                    <div class="bg-secondary rounded p-2 text-center text-white"
-                                                        id="playerLifeAdjustment">0</div>
-                                                </div>
-                                                <div class="mb-2">
-                                                    <label class="form-label">經濟值影響</label>
-                                                    <div class="bg-secondary rounded p-2 text-center text-white"
-                                                        id="playerEconomyAdjustment">0</div>
-                                                </div>
+                                            <div class="col-6">
+                                                <label class="form-label">經濟值</label>
+                                                <div class="bg-secondary rounded p-2 text-center text-white" id="playerEconomyPoints">1500</div>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
 
-                                    <!-- 對方效果顯示 -->
-                                    <div class="col-md-6">
-                                        <div class="card bg-danger bg-opacity-25 mb-3">
-                                            <div class="card-header bg-danger bg-opacity-50 text-white">
-                                                <h6 class="m-0">對對方效果</h6>
+                            <!-- 對方狀態 -->
+                            <div class="col-md-6 h-100">
+                                <div class="card bg-dark text-light h-100">
+                                    <div class="card-header bg-danger text-white">
+                                        <h5 class="m-0">對方狀態</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row h-100 align-items-center">
+                                            <div class="col-6">
+                                                <label class="form-label">生命值</label>
+                                                <div class="bg-secondary rounded p-2 text-center text-white" id="opponentLifePoints">1500</div>
                                             </div>
-                                            <div class="card-body">
-                                                <div class="mb-2">
-                                                    <label class="form-label">生命值影響</label>
-                                                    <div class="bg-secondary rounded p-2 text-center text-white"
-                                                        id="opponentLifeAdjustment">0</div>
-                                                </div>
-                                                <div class="mb-2">
-                                                    <label class="form-label">經濟值影響</label>
-                                                    <div class="bg-secondary rounded p-2 text-center text-white"
-                                                        id="opponentEconomyAdjustment">0</div>
-                                                </div>
+                                            <div class="col-6">
+                                                <label class="form-label">經濟值</label>
+                                                <div class="bg-secondary rounded p-2 text-center text-white" id="opponentEconomyPoints">1500</div>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
 
-                                    <div class="col-12 mt-2">
-                                        <button id="applyCardEffect" class="btn btn-primary w-100">
-                                            <i class="fas fa-check me-2"></i>應用卡牌效果
-                                        </button>
+                        <!-- 卡牌選擇區域 -->
+                        <div class="row card-section g-2">
+                            <!-- 自身出牌 -->
+                            <div class="col-md-6 h-100">
+                                <div class="card bg-info bg-opacity-25 h-100">
+                                    <div class="card-header bg-info bg-opacity-50 text-white">
+                                        <h5 class="m-0">自身出牌</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <label for="playerCardSelector" class="form-label">選擇自身卡牌</label>
+                                        <select id="playerCardSelector" class="form-select bg-dark text-light">
+                                            <option value="">-- 選擇卡牌 --</option>
+                                        </select>
+                                        <div id="playerCardDescription" class="mt-2 p-2 bg-dark rounded d-none">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 對方出牌 -->
+                            <div class="col-md-6 h-100">
+                                <div class="card bg-danger bg-opacity-25 h-100">
+                                    <div class="card-header bg-danger bg-opacity-50 text-white">
+                                        <h5 class="m-0">對方出牌</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <label for="opponentCardSelector" class="form-label">選擇對方卡牌</label>
+                                        <select id="opponentCardSelector" class="form-select bg-dark text-light">
+                                            <option value="">-- 選擇卡牌 --</option>
+                                        </select>
+                                        <div id="opponentCardDescription" class="mt-2 p-2 bg-dark rounded d-none">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 卡牌效果區域 -->
+                        <div class="row mt-2" id="adjustmentPanel">
+                            <div class="col-12">
+                                <div class="card bg-dark">
+                                    <div class="card-body">
+                                        <h5 class="card-title">卡牌效果</h5>
+                                        <div class="row g-2">
+                                            <div class="col-md-6">
+                                                <div class="card bg-info bg-opacity-25">
+                                                    <div class="card-header bg-info bg-opacity-50 text-white">
+                                                        <h6 class="m-0">對自身效果</h6>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <div class="row">
+                                                            <div class="col-6">
+                                                                <label class="form-label">生命值影響</label>
+                                                                <div class="bg-secondary rounded p-2 text-center text-white" id="playerLifeAdjustment">0</div>
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <label class="form-label">經濟值影響</label>
+                                                                <div class="bg-secondary rounded p-2 text-center text-white" id="playerEconomyAdjustment">0</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="card bg-danger bg-opacity-25">
+                                                    <div class="card-header bg-danger bg-opacity-50 text-white">
+                                                        <h6 class="m-0">對對方效果</h6>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <div class="row">
+                                                            <div class="col-6">
+                                                                <label class="form-label">生命值影響</label>
+                                                                <div class="bg-secondary rounded p-2 text-center text-white" id="opponentLifeAdjustment">0</div>
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <label class="form-label">經濟值影響</label>
+                                                                <div class="bg-secondary rounded p-2 text-center text-white" id="opponentEconomyAdjustment">0</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 mt-2">
+                                                <button id="applyCardEffect" class="btn btn-primary w-100">
+                                                    <i class="fas fa-check me-2"></i>應用卡牌效果
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -166,51 +195,35 @@
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- 隨機事件區域 -->
-        <div class="card bg-secondary text-light mb-4 shadow">
-            <div class="card-header bg-primary d-flex justify-content-between align-items-center">
-                <h2 class="h4 mb-0">隨機事件</h2>
-                <button class="btn btn-warning" id="generateEvent">生成新事件</button>
-            </div>
-            <div class="card-body">
-                <div id="eventContainer" class="d-none">
-                    <h3 id="eventTitle" class="h5 mb-3">事件標題</h3>
-                    <p id="eventDescription" class="mb-4">事件描述將在這裡顯示...</p>
-
-                    <div id="questionContainer" class="mb-3">
-                        <p id="questionText" class="fw-bold">問題將在這裡顯示...</p>
-                        <div id="optionsContainer" class="list-group">
-                            <!-- 選項將在這裡動態生成 -->
-                        </div>
+            <!-- 右側面板 -->
+            <div class="col-md-4 h-100">
+                <div class="card bg-secondary text-light h-100">
+                    <div class="card-header bg-primary d-flex justify-content-between align-items-center">
+                        <h2 class="h4 mb-0">隨機事件</h2>
+                        <button class="btn btn-warning" id="generateEvent">生成新事件</button>
                     </div>
-
-                    <div id="resultContainer" class="alert alert-info d-none">
-                        <p id="resultText">結果將在這裡顯示...</p>
-                        <div id="effectsContainer">
-                            <!-- 效果將在這裡顯示 -->
+                    <div class="card-body">
+                        <div id="eventContainer" class="d-none">
+                            <h3 id="eventTitle" class="h5 mb-2">事件標題</h3>
+                            <p id="eventDescription" class="mb-2">事件描述將在這裡顯示...</p>
+                            <div id="questionContainer" class="mb-2">
+                                <p id="questionText" class="fw-bold">問題將在這裡顯示...</p>
+                                <div id="optionsContainer" class="list-group">
+                                </div>
+                            </div>
+                            <div id="resultContainer" class="alert alert-info d-none">
+                                <p id="resultText">結果將在這裡顯示...</p>
+                                <div id="effectsContainer">
+                                </div>
+                            </div>
+                        </div>
+                        <div id="noEventContainer" class="text-center py-3">
+                            <i class="fas fa-dice fa-3x mb-2"></i>
+                            <p>點擊上方按鈕生成隨機事件</p>
                         </div>
                     </div>
                 </div>
-
-                <div id="noEventContainer" class="text-center py-5">
-                    <i class="fas fa-dice fa-4x mb-3"></i>
-                    <p>點擊上方按鈕生成隨機事件</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- 事件歷史記錄 -->
-        <div class="card bg-secondary text-light shadow">
-            <div class="card-header bg-primary">
-                <h2 class="h4 mb-0">事件歷史</h2>
-            </div>
-            <div class="card-body">
-                <ul id="historyList" class="list-group list-group-flush bg-transparent">
-                    <!-- 歷史記錄將在這裡動態生成 -->
-                    <li class="list-group-item bg-transparent text-light border-bottom border-secondary">尚無歷史記錄</li>
-                </ul>
             </div>
         </div>
     </div>
@@ -221,8 +234,7 @@
             <div class="modal-content bg-dark text-light">
                 <div class="modal-header bg-primary">
                     <h5 class="modal-title">歡迎使用RPG桌遊助手</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <p>這是一個幫助你進行桌遊的小工具，功能包括：</p>
